@@ -13,11 +13,8 @@ if (isset($_GET['kembali'])) {
   // Update status peminjaman dan tanggal kembali
   mysqli_query($koneksi, "UPDATE peminjaman SET status='Dikembalikan', tanggal_kembali='$tgl_kembali' WHERE id='$id'");
 
-  // Update status alat ke Tersedia
-  mysqli_query($koneksi, "UPDATE alat SET status='Tersedia' WHERE id_alat='$id_alat'");
-
-  // Tambah jumlah pemakaian alat +1
-  mysqli_query($koneksi, "UPDATE alat SET jumlah_pemakaian = jumlah_pemakaian + 1 WHERE id_alat = '$id_alat'");
+  // Update status alat ke Tersedia dan jumlah pemakaian
+  mysqli_query($koneksi, "UPDATE alat SET status='Tersedia', jumlah_pemakaian = jumlah_pemakaian + 1 WHERE id_alat='$id_alat'");
 
   header("Location: pengembalian.php?returned=1");
   exit();
@@ -36,12 +33,14 @@ $query = mysqli_query($koneksi, "SELECT p.*, a.id_alat, a.kategori, a.jenis, a.m
   <meta charset="UTF-8">
   <title>Pengembalian Alat</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/sidebar1.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
-<?php $page_title = "Pengembalian";  ?>  
-<?php include 'sidebar.php'; ?>
+  <?php $page_title = "Pengembalian"; ?>
+  <?php include 'sidebar1.php'; ?>
+
   <main class="main">
     <?php include 'topbar.php'; ?>
 
@@ -90,6 +89,15 @@ $query = mysqli_query($koneksi, "SELECT p.*, a.id_alat, a.kategori, a.jenis, a.m
   document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('returned')) alert("Alat berhasil dikembalikan!");
+
+    const toggleBtn = document.getElementById("toggleSidebar");
+    const sidebar = document.querySelector(".sidebar");
+    const main = document.querySelector(".main");
+
+    toggleBtn?.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+      main.classList.toggle("expanded");
+    });
   });
 </script>
 </body>
