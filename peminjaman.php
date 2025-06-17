@@ -42,14 +42,20 @@ if (isset($_POST['simpan'])) {
   <meta charset="UTF-8">
   <title>Peminjaman Alat</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/sidebar1.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
 <div class="container">
-<?php $page_title = "Peminjaman"; ?>
-  <?php include 'sidebar.php'; ?>
+  <?php $page_title = "Peminjaman"; ?>
+  <?php include 'sidebar1.php'; ?>
   <main class="main">
-    <?php include 'topbar.php'; ?>
+    <!-- Tambahkan hamburger di topbar -->
+    <div class="topbar">
+      <button id="hamburger"><i class="bi bi-list"></i></button>
+      <h1><?= $page_title ?></h1>
+    </div>
 
     <div class="tabs-peminjaman" style="margin-bottom: 20px;">
       <a href="peminjaman.php?kategori=scanner" class="tab <?= $kategori === 'scanner' ? 'active' : '' ?>">Scanner</a>
@@ -102,7 +108,12 @@ if (isset($_POST['simpan'])) {
   </main>
 </div>
 
+<!-- JavaScript untuk tombol hamburger -->
 <script>
+  document.getElementById("hamburger")?.addEventListener("click", function () {
+    document.getElementById("sidebar").classList.toggle("show");
+  });
+
   document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
     if (params.get('success')) alert("Peminjaman berhasil disimpan!");
