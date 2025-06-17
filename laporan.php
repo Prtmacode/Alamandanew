@@ -1,12 +1,10 @@
 <?php
 include 'koneksi.php';
 
-// Ambil dan sanitasi input
 $tgl_dari   = isset($_GET['dari']) ? mysqli_real_escape_string($koneksi, $_GET['dari']) : '';
 $tgl_sampai = isset($_GET['sampai']) ? mysqli_real_escape_string($koneksi, $_GET['sampai']) : '';
 $kategori   = isset($_GET['kategori']) ? mysqli_real_escape_string($koneksi, $_GET['kategori']) : '';
 
-// Bangun query
 $query = "SELECT p.*, a.jenis, a.kategori, a.merek 
           FROM peminjaman p 
           JOIN alat a ON p.id_alat = a.id_alat 
@@ -22,7 +20,6 @@ if (!empty($kategori)) {
 
 $query .= " ORDER BY p.tanggal_pinjam DESC";
 
-// Eksekusi query
 $result = mysqli_query($koneksi, $query);
 if (!$result) {
   die("Query gagal: " . mysqli_error($koneksi));
@@ -34,6 +31,7 @@ if (!$result) {
   <meta charset="UTF-8">
   <title>Laporan Peminjaman</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/sidebar1.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <style>
     .form-filter {
@@ -105,8 +103,9 @@ if (!$result) {
 </head>
 <body>
 <div class="container">
-<?php $page_title = "Laporan"; ?>
-  <?php include 'sidebar.php'; ?>
+  <?php $page_title = "Laporan"; ?>
+  <?php include 'sidebar1.php'; ?>
+
   <main class="main">
     <?php include 'topbar.php'; ?>
 
@@ -180,5 +179,18 @@ if (!$result) {
     </div>
   </main>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.getElementById("toggleSidebar");
+    const sidebar = document.querySelector(".sidebar");
+    const main = document.querySelector(".main");
+
+    toggleBtn?.addEventListener("click", function () {
+      sidebar.classList.toggle("collapsed");
+      main.classList.toggle("expanded");
+    });
+  });
+</script>
 </body>
 </html>
